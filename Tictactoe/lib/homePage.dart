@@ -1,3 +1,4 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +11,80 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
+  // final String x = 'X';
+  // final String o = 'O';
+  // late String element = '';
+  // bool xTurn = true;
+  bool oTurn = false;
+  Border xTurnContainerBorder = Border.all(width: 2, color: Colors.white70);
+  Border oTurnContainerBorder = Border.all(width: 0,);
+
+  List<String> displayElement = ['', '', '', '', '', '', '', '', ''];
+
+  void changeTurn(){
+    if(oTurn == false){
+      xTurnContainerBorder = Border.all(width: 2, color: Colors.white70);
+      oTurnContainerBorder =  Border.all(width: 0,);
+    } else if(oTurn == true){
+      oTurnContainerBorder = Border.all(width: 2, color: Colors.white70);
+      xTurnContainerBorder = Border.all(width: 0,);
+    }
+  }
+
+  void _tapped(int index) {
+    setState(() {
+      // if (oTurn && displayElement[index] == '') {
+      //   displayElement[index] = 'O';
+      //   // filledBoxes++;
+      // } else if (!oTurn && displayElement[index] == '') {
+      //   displayElement[index] = 'X';
+      //   // filledBoxes++;
+      // }
+
+      if(displayElement[index] == ''){
+        if(oTurn){
+          displayElement[index] = 'O';
+        }else if (!oTurn){
+          displayElement[index] = 'X';
+        }
+
+        oTurn = !oTurn;
+        changeTurn();
+      }
+
+      // _checkWinner();
+    });
+  }
+
+  // void _tapped(){
+  //   // print('box tapped');
+  //   if(xTurn == true){
+  //     element = x;
+  //     xTurn = false;
+  //     oTurn = true;
+  //   } else {
+  //     element = o;
+  //     xTurn = true;
+  //     oTurn = false;
+  //   }
+  //   changeTurn();
+  //   setState(() {});
+  // }
+
+  void _clearBoard(){
+
+    setState(() {
+      for (int i = 0; i < 9; i++) {
+        displayElement[i] = '';
+      }
+    });
+
+    // filledBoxes = 0;
+    // element = '';
+    // xTurn = true;
+    // oTurn = false;
+    // changeTurn();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   height: 110,
                   width: 110,
                   decoration: BoxDecoration(
-                    border: Border.all(width: 2, color: Colors.white70),
+                    border: xTurnContainerBorder,
                     borderRadius: const BorderRadius.all(Radius.circular(20)),
                     color: const Color(0xFF0F1131),
                   ),
@@ -43,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   width: 110,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    border: Border.all(width: 0,),
+                    border: oTurnContainerBorder,
                     borderRadius: const BorderRadius.all(Radius.circular(20)),
                     color: const Color(0xFF0F1131),
                   ),
@@ -67,7 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
-                    onTap: () {},
+                    onTap:() => _tapped(index),
                     child: Container(
                       margin: const EdgeInsets.only(right: 8, bottom: 8),
                       decoration: const BoxDecoration(
@@ -75,14 +150,14 @@ class _MyHomePageState extends State<MyHomePage> {
                         color: Color(0xFF0F1131),
                       ),
                       alignment: Alignment.center,
-                      child: const Text('X', style: TextStyle(color: Colors.white70),),
+                      child: DisplayElement(value: displayElement[index],),
                     ),
                   );
                 },
               ),
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: _clearBoard,
               child: const Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -100,6 +175,40 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
+    );
+  }
+}
+
+
+class DisplayElement extends StatelessWidget {
+
+  final String value;
+  const DisplayElement({super.key, required this.value});
+
+  @override
+  Widget build(BuildContext context) {
+
+    IconData iconData;
+    Color iconColor;
+
+    switch (value){
+      case 'X':
+        iconData = Icons.close;
+        iconColor = const Color(0xFFE61C4F);
+        break;
+      case 'O':
+        iconData = Icons.circle_outlined;
+        iconColor = const Color(0xFFFFCE3B);
+        break;
+      default:
+        iconData = Icons.error;
+        iconColor = const Color(0xFF0F1131);
+    }
+
+    return Icon(
+      iconData,
+      color: iconColor,
+      size: 70,
     );
   }
 }
