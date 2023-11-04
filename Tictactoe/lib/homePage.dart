@@ -18,9 +18,8 @@ class _MyHomePageState extends State<MyHomePage> {
   bool oTurn = false;
   Border xTurnContainerBorder = Border.all(width: 2, color: Colors.white70);
   Border oTurnContainerBorder = Border.all(width: 0,);
-
-  List<String> displayElement = ['', '', '', '', '', '', '', '', ''];
-
+  List<String> elements = ['', '', '', '', '', '', '', '', ''];
+  int boxesFilled = 0;
   void changeTurn(){
     if(oTurn == false){
       xTurnContainerBorder = Border.all(width: 2, color: Colors.white70);
@@ -41,45 +40,107 @@ class _MyHomePageState extends State<MyHomePage> {
       //   // filledBoxes++;
       // }
 
-      if(displayElement[index] == ''){
+      if(elements[index] == ''){
         if(oTurn){
-          displayElement[index] = 'O';
+          elements[index] = 'O';
+          boxesFilled++;
         }else if (!oTurn){
-          displayElement[index] = 'X';
+          elements[index] = 'X';
+          boxesFilled++;
         }
-
         oTurn = !oTurn;
         changeTurn();
       }
-
-      // _checkWinner();
+      _checkWinner();
     });
   }
 
-  // void _tapped(){
-  //   // print('box tapped');
-  //   if(xTurn == true){
-  //     element = x;
-  //     xTurn = false;
-  //     oTurn = true;
-  //   } else {
-  //     element = o;
-  //     xTurn = true;
-  //     oTurn = false;
-  //   }
-  //   changeTurn();
-  //   setState(() {});
-  // }
+  void _checkWinner(){
+
+    //check rows
+    if(elements[0] != '' && elements[0] == elements[1] && elements[0] == elements[2]){
+      _declareWinner(elements[0]);
+    }
+    if(elements[3] != '' && elements[3] == elements[4] && elements[3] == elements[5]){
+      _declareWinner(elements[3]);
+    }
+    if(elements[6] != '' && elements[6] == elements[7] && elements[6] == elements[8]){
+      _declareWinner(elements[6]);
+    }
+
+    //check columns
+    if(elements[0] != '' && elements[0] == elements[3] && elements[0] == elements[6]){
+      _declareWinner(elements[0]);
+    }
+    if(elements[1] != '' && elements[1] == elements[4] && elements[1] == elements[7]){
+      _declareWinner(elements[1]);
+    }
+    if(elements[2] != '' && elements[2] == elements[5] && elements[2] == elements[8]){
+      _declareWinner(elements[2]);
+    }
+
+    //check diagonals
+    if(elements[0] != '' && elements[0] == elements[4] && elements[0] == elements[8]){
+      _declareWinner(elements[0]);
+    }
+    if(elements[2] != '' && elements[2] == elements[4] && elements[2] == elements[6]){
+      _declareWinner(elements[2]);
+    }
+
+    //draw
+    if(boxesFilled==9){
+      _drawGame();
+    }
+  }
+
+  void _declareWinner(String winner){
+    showDialog(
+      context: context,
+      builder: (BuildContext context){
+        return AlertDialog(
+          title: Text('$winner is the winner!'),
+          actions: [
+            ElevatedButton(
+              onPressed: (){
+                _clearBoard();
+                Navigator.of(context).pop();
+              },
+              child: const Text('Play Again?'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _drawGame(){
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('It\'s a draw!'),
+          actions: [
+            ElevatedButton(
+              onPressed: (){
+                _clearBoard();
+                Navigator.of(context).pop();
+              },
+              child: const Text('Play Again?'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   void _clearBoard(){
-
     setState(() {
       for (int i = 0; i < 9; i++) {
-        displayElement[i] = '';
+        elements[i] = '';
       }
     });
 
-    // filledBoxes = 0;
+    boxesFilled = 0;
     // element = '';
     // xTurn = true;
     // oTurn = false;
@@ -150,7 +211,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         color: Color(0xFF0F1131),
                       ),
                       alignment: Alignment.center,
-                      child: DisplayElement(value: displayElement[index],),
+                      child: DisplayElement(value: elements[index],),
                     ),
                   );
                 },
