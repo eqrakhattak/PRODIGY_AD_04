@@ -216,7 +216,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Icon(CupertinoIcons.restart),
                   SizedBox(width: 8,),
                   Text(
-                    'Reset',
+                    'RESET',
                     style: TextStyle(
                       fontSize: 23,
                     ),
