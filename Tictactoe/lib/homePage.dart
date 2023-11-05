@@ -1,6 +1,6 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'widgets/display_element.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -11,35 +11,14 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  // final String x = 'X';
-  // final String o = 'O';
-  // late String element = '';
-  // bool xTurn = true;
   bool oTurn = false;
-  Border xTurnContainerBorder = Border.all(width: 2, color: Colors.white70);
-  Border oTurnContainerBorder = Border.all(width: 0,);
   List<String> elements = ['', '', '', '', '', '', '', '', ''];
   int boxesFilled = 0;
-  void changeTurn(){
-    if(oTurn == false){
-      xTurnContainerBorder = Border.all(width: 2, color: Colors.white70);
-      oTurnContainerBorder =  Border.all(width: 0,);
-    } else if(oTurn == true){
-      oTurnContainerBorder = Border.all(width: 2, color: Colors.white70);
-      xTurnContainerBorder = Border.all(width: 0,);
-    }
-  }
+  Border xTurnContainerBorder = Border.all(width: 2, color: Colors.white70);
+  Border oTurnContainerBorder = Border.all(width: 0,);
 
   void _tapped(int index) {
     setState(() {
-      // if (oTurn && displayElement[index] == '') {
-      //   displayElement[index] = 'O';
-      //   // filledBoxes++;
-      // } else if (!oTurn && displayElement[index] == '') {
-      //   displayElement[index] = 'X';
-      //   // filledBoxes++;
-      // }
-
       if(elements[index] == ''){
         if(oTurn){
           elements[index] = 'O';
@@ -49,10 +28,20 @@ class _MyHomePageState extends State<MyHomePage> {
           boxesFilled++;
         }
         oTurn = !oTurn;
-        changeTurn();
+        _changeTurn();
       }
       _checkWinner();
     });
+  }
+
+  void _changeTurn(){
+    if(oTurn == false){
+      xTurnContainerBorder = Border.all(width: 2, color: Colors.white70);
+      oTurnContainerBorder =  Border.all(width: 0,);
+    } else if(oTurn == true){
+      oTurnContainerBorder = Border.all(width: 2, color: Colors.white70);
+      xTurnContainerBorder = Border.all(width: 0,);
+    }
   }
 
   void _checkWinner(){
@@ -111,6 +100,14 @@ class _MyHomePageState extends State<MyHomePage> {
         );
       },
     );
+
+    if(winner == 'O'){
+      oTurn = true;
+      _changeTurn();
+    }else{
+      oTurn = false;
+      _changeTurn();
+    }
   }
 
   void _drawGame(){
@@ -139,12 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
         elements[i] = '';
       }
     });
-
     boxesFilled = 0;
-    // element = '';
-    // xTurn = true;
-    // oTurn = false;
-    // changeTurn();
   }
 
   @override
@@ -240,36 +232,3 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-
-class DisplayElement extends StatelessWidget {
-
-  final String value;
-  const DisplayElement({super.key, required this.value});
-
-  @override
-  Widget build(BuildContext context) {
-
-    IconData iconData;
-    Color iconColor;
-
-    switch (value){
-      case 'X':
-        iconData = Icons.close;
-        iconColor = const Color(0xFFE61C4F);
-        break;
-      case 'O':
-        iconData = Icons.circle_outlined;
-        iconColor = const Color(0xFFFFCE3B);
-        break;
-      default:
-        iconData = Icons.error;
-        iconColor = const Color(0xFF0F1131);
-    }
-
-    return Icon(
-      iconData,
-      color: iconColor,
-      size: 70,
-    );
-  }
-}
