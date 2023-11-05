@@ -76,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     //draw
-    if(boxesFilled==9){
+    if(boxesFilled == 9){
       _drawGame();
     }
   }
@@ -203,7 +203,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         color: Color(0xFF0F1131),
                       ),
                       alignment: Alignment.center,
-                      child: DisplayElement(value: elements[index],),
+                      child: DisplayElement(value: elements[index]),
                     ),
                   );
                 },
