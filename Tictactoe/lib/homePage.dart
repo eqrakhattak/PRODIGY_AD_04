@@ -183,6 +183,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
             Container(
+              margin: const EdgeInsets.all(5),
               padding: const EdgeInsets.only(top: 8, left: 8),
               decoration: const BoxDecoration(
                 color: Color(0xFF6648C3),
