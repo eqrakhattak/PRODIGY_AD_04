@@ -11,7 +11,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  bool oTurn = false;
+  bool oTurn = false;     // X's turn first
   List<String> elements = ['', '', '', '', '', '', '', '', ''];
   int boxesFilled = 0;
   Border xTurnContainerBorder = Border.all(width: 2, color: Colors.white70);
@@ -45,7 +45,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _checkWinner(){
-
     //check rows
     if(elements[0] != '' && elements[0] == elements[1] && elements[0] == elements[2]){
       _declareWinner(elements[0]);
